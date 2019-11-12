@@ -7,7 +7,7 @@
     <a href  = https://github.com/toin123/ResumeReader/blob/master/team/Hannah_Lerner/Hannah_Lerner.md>Hannah Lerner</a>
   </li>
   <li>
-    <a href  = https://github.com/toin123/ResumeReader/blob/master/team/Aparimit_Chandra/Aparimit_Chandra.md>Aparimit   Chandra</a>
+    <a href  = https://github.com/toin123/ResumeReader/blob/master/team/Aparimit_Chandra/Aparimit_Chandra.md>Aparimit Chandra</a>
   </li>
   <li>
     <a href  = https://github.com/toin123/ResumeReader/blob/master/team/Melina_Barzola/Melina_Barzola.md>Melina Barzola</a>
