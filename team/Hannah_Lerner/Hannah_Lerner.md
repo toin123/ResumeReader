@@ -1,0 +1,2 @@
+<h1> Hannah Lerner</h1>
+<p> My name is Hannah Lerner and I am currently a senior and will (hopefully) be graduating in the spring. Last summer I worked as a software engineering intern at Viasat Inc. developing a security system for a portable network encryptor. My studies focus primarily on ML and NLP, but I also enjoy a bit of web dev as well. My hobbies are cooking, hardware tinkering, and gaming.</p>
