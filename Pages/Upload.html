@@ -1,5 +1,25 @@
 <!DOCTYPE html>
 <html>
+  <head>
+<style>
+#drop_zone {
+  border: 5px solid blue;
+  border-width: px;
+  width:  200px;
+  height: 100px;
+  background-color: lightgrey;
+  opacity: .2;
+}
+</style>
+<link rel="stylesheet" href=".\dist\min\basic.min.css">
+<link rel="stylesheet" href=".\dist\min\dropzone.min.css">
+<link rel="stylesheet" href=".\dist\basic.css">
+<link rel="stylesheet" href=".\dist\dropzone.css">
+<link rel="stylesheet" href=".\dist\styles.css">
+<script src=".\dropzone.js"></script>
+
+
+</head>
 	<body>
 		<h1>Resume Reader</h1>
 		<h3>Upload</h3>
@@ -7,6 +27,20 @@
 			<a href='Query.html'>Query</a>
 			<a href='Upload.html'>Upload</a>
 		</div>
+    <section>
+
+      <h1 id="try-it-out">Try it out!</h1>
+    
+      <div id="dropzone"><form action="/upload" class="dropzone needsclick dz-clickable" id="demo-upload">
+    
+      <div class="dz-message needsclick">
+        Drop files here or click to upload.<br>
+        <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span>
+      </div>
+    
+    </form></div>
+    
+    </section>
 	</body>
 </html>
 
