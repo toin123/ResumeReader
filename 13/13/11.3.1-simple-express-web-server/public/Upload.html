@@ -1,0 +1,104 @@
+
+<!--
+  <link href="/t/css/plugins/dropzone/dropzone.css" rel="stylesheet"/>
+
+
+<link rel="stylesheet" href=".\dist\min\basic.min.css">
+<link rel="stylesheet" href=".\dist\min\dropzone.min.css">
+<link rel="stylesheet" href=".\dist\basic.css">
+<link rel="stylesheet" href=".\dist\dropzone.css">
+<link rel="stylesheet" href=".\dist\styles.css">
+<script src=".\dropzone.js"></script>
+
+	<body>
+		<h1>Resume Reader</h1>
+		<h3>Upload</h3>
+		<div>
+			<a href='Query.html'>Query</a>
+			<a href='Upload.html'>Upload</a>
+		</div>
+    <section>
+
+      <h1 id="try-it-out">Try it out!</h1>
+    
+      <div id="dropzone"><form method="POST" action="/batch/upload" class="dropzone needsclick dz-clickable" id="demo-upload">
+    
+      <div class="dz-message needsclick">
+        Drop files here or click to upload.<br>
+        <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span>
+      </div>
+    
+    </form></div>
+    
+    </section>
+	</body>
+</html>
+
+-->
+<!--
+
+
+
+
+	
+-->
+<h1>Resume Reader</h1>
+<h3>Upload</h3>
+<div>
+  <a href='Query.html'>Query</a>
+  <a href='Upload.html'>Upload</a>
+</div>
+
+<h1 id="try-it-out">Add Resume Here!</h1>
+<form id="my-awesome-dropzone" action="/batch/upload" method="post" enctype="multipart/form-data" class="dropzone">
+  <div class="fallback">
+    <input name="source_file[]" type="file" multiple="multiple"/>
+  </div>
+  <div class="form-group pull-right">
+    <button id="batch-upload" type="submit" class="btn btn-danger">Upload Now! </button>
+  </div>
+</form>
+<script src="/t/js/plugins/dropzone/dropzone.js"></script>
+<script>
+  
+$(document).ready(function() {
+  
+    Dropzone.options.myAwesomeDropzone = {
+      url:'/batch/upload',
+      autoProcessQueue: false,
+      //paramName:'source_file', // Name used to transfer the file(s) (will have '[i=0,1,2,3,4...]' appended)
+      paramName: function(n) { return 'source_file[]';},  // Don't enumerate the transfers
+      uploadMultiple: true,
+      parallelUploads: 4,  // default is 2
+      //maxFilesize: 2, // MB
+
+      init: function() {
+        var myDropzone = this;
+        this.on("completemultiple", function(files, response) {  // was queuecomplete
+          console.log("Complete!");
+          
+          // Now reload page...
+          location.reload(true);  // true => force server reload
+          console.log("Reloaded?");
+        });
+        
+        this.on("addedfile", function() { 
+          console.log("Added File! - show the upload button");
+          $('#batch-upload').show();
+        });
+        
+        $('#batch-upload').click( function(e) {
+          console.log("Clicked on upload button"); // , e.target.href
+          
+          e.preventDefault();
+          e.stopPropagation();
+          
+          myDropzone.processQueue();
+        }).hide();
+        
+      }
+      
+    };      
+    
+  });  
+</script>
