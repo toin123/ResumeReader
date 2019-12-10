@@ -54,18 +54,14 @@
 			</div>
 
 
-			<table class="table">
+			<table id = "table" class="table">
 				<thead>
 					<tr>
 						<th scope="col">Resume</th>
 						<th scope="col">Score</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr>
-						<td>Resume1</td>
-						<td>Score1</td>
-					</tr>
+				<tbody id = "tbody">
 				</tbody>
 			</table>
 			<!-- Not sure what this is for, but since it was in your original I included it too -->
@@ -82,76 +78,80 @@
 				document.querySelector('.output').textContent
 					= output;
 			}
-			function gettop(fields) {
-				var firebaseConfig = {
-					apiKey: "AIzaSyBXM3RFGakR_cAPeaUR0vlb3_ttnwQocsc",
-					authDomain: "resumereader-6bf10.firebaseapp.com",
-					databaseURL: "https://resumereader-6bf10.firebaseio.com",
-					projectId: "resumereader-6bf10",
-					storageBucket: "resumereader-6bf10.appspot.com",
-					messagingSenderId: "387824551037",
-					appId: "1:387824551037:web:8022f5230d70d6fe645d14",
-					measurementId: "G-NTPY1LC5RK"
-				};
-				// Initialize Firebase
-				if (!firebase.apps.length) {
-					firebase.initializeApp(firebaseConfig);
-				}
-				var db = firebase.firestore();
-				db.collection("test").add({
-					first: "Ada",
-					last: "Lovelace",
-					born: 1815
-				})
-				var list = []
-				db.collection("users").where("Max", "==", fields)
-					.get()
-					.then(function (querySnapshot) {
-						querySnapshot.forEach(function (doc) {
-							var name = doc.get("name");
-							var score = doc.get(fields);
-							list.push([name, score]);
-						});
-					})
-					.catch(function (error) {
-						console.log("Error getting documents: ", error);
-					});
-				function sortFunction(a, b) {
-					if (a[1] === b[1]) {
-						return 0;
-					}
-					else {
-						return (a[1] > b[1]) ? -1 : 1;
-					}
-				}
-				console.log(list)
-				list.sort(sortFunction);
-				console.log(list)
-				console.log(list)
-				var ret_val = []
-				for (var i = 0; i < 10; i++) {
-					console.log(list[i])
-					ret_val.push(list[i])
-				}
-				// ret_val = list.slice(0, 10);
-				console.log(ret_val)
-				return ret_val
-			}
+			function gettop(fields){
+    			var firebaseConfig = {
+    				apiKey: "AIzaSyBXM3RFGakR_cAPeaUR0vlb3_ttnwQocsc",
+    				authDomain: "resumereader-6bf10.firebaseapp.com",
+    				databaseURL: "https://resumereader-6bf10.firebaseio.com",
+    				projectId: "resumereader-6bf10",
+    				storageBucket: "resumereader-6bf10.appspot.com",
+    				messagingSenderId: "387824551037",
+    				appId: "1:387824551037:web:8022f5230d70d6fe645d14",
+    				measurementId: "G-NTPY1LC5RK"
+    		};
+    		// Initialize Firebase
+    		if (!firebase.apps.length) {
+    			firebase.initializeApp(firebaseConfig);
+    		}
+    		var db = firebase.firestore();
+    		db.collection("test").add({
+    			first: "Ada",
+    			last: "Lovelace",
+    			born: 1815
+    		})
+    		let list = [];
+    		var name;
+    		var score;
+    		var toAdd;
+    		var promise = new Promise(function(resolve, reject) { 
+    		  db.collection("users").where("Max", "==", fields)
+    		  .get()
+    		  .then(function(querySnapshot) { //Nothing inside this inner function will be updated in the list, but the values will appear when printed. essentially they are being commited to memory, but the list itself doesn't record these as entries. You can see them when printed, but are unable to iterate through them and interact with them in javascript.
+        		  querySnapshot.forEach(function(doc) {
+            		  name = doc.get("name");
+            		  score = doc.get(fields);
+            		  toAdd = [name, score];
+            		  list.push(toAdd);
+          		  });
+          // newList.sort(function(a,b){
+          //   return b[1]-a[1];
+          // })
+          resolve();
+      })
+      .catch(function(error) {
+          console.log("Error getting documents: ", error);
+          reject();
+      });
+    });
+    promise. 
+    then(function () { 
+      list.sort(function(a,b){
+        return b[1]-a[1];
+      })
+      console.log(list);
+      var topten = [list[0], list[1], list[2], list[3], list[4], list[5], list[6], list[7], list[8], list[9]]
+      console.log(topten);
+      var array = topten, table = document.getElementById("table");
+      
+      table.innerHTML = "<thead><tr><th scope=\"col\">Resume</th> <th scope=\"col\">Score</th></tr></thead>";
+      for(var i=0; i<array.length;i++){
+      var newRow = table.insertRow(table.length);
+      for(var j=0; j<array[i].length; j++){
+      var cell = newRow.insertCell(j);
+      cell.innerHTML= array[i][j];
+    }
+  }
+      return list
+    }). 
+    catch(function () { 
+        console.log('Some error has occured'); 
+    }); 
+  }
 			function getSelectValue() {
 				var selectedValue = document.getElementById("list").value;
 				// console.log(selectedValue)
 				topten = gettop(selectedValue);
 				// console.log(topten)
-				return topten;
-			}
-			topten = getSelectValue();
-			var array = topten, table = document.getElementById("table");
-			for (var i = 0; i < array.length; i++) {
-				var newRow = table.insertRow(table.length);
-				for (var j = 0; j < array[i].length; j++) {
-					var cell = newRow.insertCell(j);
-					cell.innerHTML = array[i][j];
-				}
 			}
 		</script>
 
