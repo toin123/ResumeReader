@@ -1,6 +1,8 @@
-// server.js
+// serve
+
 const express = require("express");
 const app = express();
+
 
 
 var upload_files = require('multer')();
@@ -13,6 +15,10 @@ var Promise = require('bluebird');
 var fs = Promise.promisifyAll(require('fs'));
 var path = require('path');
 var sanitize = require("sanitize-filename");
+let {PythonShell} = require('python-shell');
+
+
+
 
 function process_upload(req, res) {
   if(req.files) { 
@@ -27,20 +33,49 @@ function process_upload(req, res) {
           var sanitized_filename = sanitize(file_incoming.originalname);
           var file_to_save = path.join( upload_dir, sanitized_filename );
           var second_to_save = path.join( second_dir, sanitized_filename );
-          console.log("hey I got here")
-          return fs
-            .writeFileAsync(file_to_save, file_incoming.buffer),fs.writeFileAsync(second_to_save, file_incoming.buffer) 
-             
+        
+          let x = fs
+            .writeFileSync(file_to_save, file_incoming.buffer) 
+          let y = fs.writeFileSync(second_to_save, file_incoming.buffer)    
+
       })
-      // .catch() code not included for clarity : Clearly you'll need to do some error checking...
+    
       .then( _ => {
         console.log("Added files : Success");
-        return res.sendStatus(200);
+
+        let x = res.sendStatus(200)
+        PythonShell.run('C:/Users/jakuz/Documents/13/13/11.3.1-simple-express-web-server/NLPEngine/upload.py', null,  function (err) {
+          if (err) throw err;
+          console.log('finished');
+        });
+        setTimeout(function() {
+          //your code to be executed after 1 second
+          
+          const directory = "C:/Users/jakuz/Documents/13/13/11.3.1-simple-express-web-server/Grab/";
+
+          fs.readdir(directory, (err, files) => {
+            if (err) throw err;
+          
+            for (const file of files) {
+              // fs.closeSync(file);
+              fs.unlink(path.join(directory, file), err => {
+                if (err) throw err;
+              });
+            }
+          });
+        }, 10000);
+      
       });
 
+
+
+
   }
-  
+
 }
+
+
+
 
 // Serve static files from the public dir
 app.use(express.static("public"));
